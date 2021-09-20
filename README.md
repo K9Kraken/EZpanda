@@ -31,6 +31,8 @@ def exit():
 
 
 Model loading and state changing example:
+
+*NOTE: When finished with a EZnode like the model below you must call delete() on it to clear it from memory: model.delete(). The delete function will delete the node and any children it has.*
 ```
 mesh = ez.load.mesh('ship.bam')
 texture = ez.load.texture('ship.png')
