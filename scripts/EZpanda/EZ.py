@@ -120,8 +120,8 @@ class Load: #for ez.load
 
 
 config = {
-'file':                       "config/Config.prc", #Set what config file to use
-'window-title':               "EZpabda", #set the window Title
+'file':                       PATH+"config/Config.prc", #Set what config file to use
+'window-title':               "EZpanda", #set the window Title
 'framebuffer-multisample':    1, #Enable AA, however it is stuck at max, workaround might be to create a new buffer and render to that.
 'multisamples':               8,
 'win-fixed-size':             1, #Prevent resizing window
@@ -129,13 +129,14 @@ config = {
 'transform-cache':            0, #Disabling this seems to increase speed when moving objects in multiple tests
 'want-tk':                    False,
 'hardware-animated-vertices': True, #For faster actor animation.
-#'threading-model':           'Cull/Draw', #Can get some more speed escept slows down SoftwareInstance.
+#'threading-model':           'Cull/Draw' #Can get some more speed escept slows down SoftwareInstance.
 'want-pstats':                0 #For testing
 }
 
 
 class EZ(dict):
     __slots__=(
+        'panda_showbase',
         'is_button_down',
         'run',
         'remove_task',
@@ -194,8 +195,6 @@ class EZ(dict):
     # Attatch Modules
     lights = EZlights
 
-    panda_showbase = ShowBase()
-
     def __init__(self, config = config):
         # Add EZ to builtins so it will be global to all modules:
         builtins.ez = self
@@ -205,6 +204,8 @@ class EZ(dict):
         load_prc_file(config['file'])
         for setting in config:
             load_prc_file_data("", setting + " " + str(config[setting]))
+
+        self.panda_showbase = ShowBase()
 
         # Disable default mouse control over the camera:
         self.panda_showbase.disable_mouse()

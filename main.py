@@ -1,6 +1,5 @@
 #Stop python form creating bytecode to keep stuff clean:
-import sys
-sys.dont_write_bytecode = True
+import sys; sys.dont_write_bytecode = True
 
 
 from scripts.EZpanda.EZ import EZ, config
