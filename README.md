@@ -6,6 +6,7 @@ A installed version [Panda3D](https://github.com/panda3d/panda3d) is is required
 
 The "main.py" file initializes EZpanda as "ez" which is globaly available, "main.y" then loads and runs the 'menu' scene. Scenes are python modules, you can make your own scense and easily switch between them. Each scene has its own render, aspect2D, and camera.
 
+
 Here is the template of a scene module:
 ```
 render = ez.Node()
@@ -28,6 +29,7 @@ def exit():
     pass
 ```
 
+
 Model loading and state changing example:
 ```
 mesh = ez.load.mesh('ship.bam')
@@ -49,7 +51,9 @@ I focused EZpanda towards using your own shaders, however you can easily use Pan
 model.panda_node.set_pos(2, 0, 0)
 ```
 
-To view code examples run EXAMPLES/main.py, here is a list of the current examples:
+
+Code examples are in the EXAMPLES folder, you can view them by running EXAMPLES/main.py.
+Here is a list of the current examples:
 ```
         A - Sound
         B - Model
