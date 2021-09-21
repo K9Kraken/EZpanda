@@ -2,7 +2,7 @@
 
 EZpanda is a layer written for Panda3D to privide simplified game development.
 
-A installed version [Panda3D](https://github.com/panda3d/panda3d) is is required.
+A installed version of [Panda3D](https://github.com/panda3d/panda3d) is is required.
 
 The "main.py" file initializes EZpanda as "ez" which is globaly available, "main.y" then loads and runs the 'menu' scene. Scenes are python modules, you can make your own scense and easily switch between them. Each scene has its own render, aspect2D, and camera.
 
