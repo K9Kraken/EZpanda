@@ -29,8 +29,8 @@ class ProceduralMesh:
         self.tri_data.extend(tris)
 
     def create_mesh(self):
-        #Each element is verts+normal, divide by 3 to get the x,y,z of each, then divide by 2 to combine normals hence 5:
-        row_count = int(len(self.vert_data)/5)
+        # Each element will be stored as verts+normal:
+        row_count = len(self.vert_data) // 6
         self.verts.unclean_set_num_rows( row_count )
         memview = memoryview( self.verts.modify_array(0) ).cast('B').cast('f')
         memview[:] = self.vert_data
