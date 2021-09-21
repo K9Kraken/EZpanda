@@ -101,7 +101,7 @@ def enter():
 
     L, R, T, B = ez.window.get_aspect2D_edges()
     text = ez['text']
-    text.text = "W - move left"
+    text.text = "A - move left"
     text.text += "\nD - move right"
     text.x = L+0.01
     text.y = T-0.08
