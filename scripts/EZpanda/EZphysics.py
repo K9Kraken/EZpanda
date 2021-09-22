@@ -253,3 +253,6 @@ class Physics:
 
     def remove_mask(self, body, mask):
         return body.physics_node.set_into_collide_mask(self.get_mask(body) ^ mask)
+
+    def has_mask(self, body, mask):
+        return mask & self.get_mask(body) == mask

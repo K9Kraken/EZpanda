@@ -291,6 +291,9 @@ class Collision:
     def remove_mask(self, EZnode, mask):
         EZnode.panda_node.set_collide_mask(self.get_mask(EZnode) ^ mask)
 
+    def has_mask(self, EZnode, mask):
+        return mask & self.get_mask(EZnode) == mask
+
     #Only works on Collision shapes and Rays:
     def get_target_mask(self, EZnode):
         return EZnode.panda_node.node().get_from_collide_mask()
@@ -303,4 +306,7 @@ class Collision:
 
     def remove_target_mask(self, EZnode, mask):
         EZnode.panda_node.node().set_from_collide_mask(self.get_target_mask(EZnode) ^ mask)
+
+    def has_target_mask(self, EZnode, mask):
+        return mask & self.get_target_mask(EZnode) == mask
 
