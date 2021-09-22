@@ -161,8 +161,8 @@ class EZ(dict):
 
     # Setup masks for use in collision, physics, camera:
     mask = {}
-    for i in range(0, 31):
-        mask[i+1] = BitMask32.bit(i)
+    for i in range(1, 32):
+        mask[i] = BitMask32.bit(i)
     mask['NONE'] = 0
     mask['ALL'] = BitMask32.all_on()
 
