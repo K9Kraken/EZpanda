@@ -109,8 +109,11 @@ class Node():
         return children
 
 
-    def look_at(self, node):
-        self.panda_node.look_at(node.panda_node)
+    def look_at(self, node_or_pos):
+        if isinstance(node_or_pos, ez.Node):
+            self.panda_node.look_at(node_or_pos.panda_node)
+        else:
+            self.panda_node.look_at(node_or_pos)
 
     def get_distance_to(self, node ):
         return self.panda_node.get_distance( node.panda_node )

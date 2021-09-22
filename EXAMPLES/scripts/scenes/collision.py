@@ -14,7 +14,7 @@ sphere.parent = render
 # Collide from mask 2:
 ez.collision.set_mask(sphere, ez.mask[2])
 # Set what sphere will collide to:
-ez.collision.set_target_mask(sphere, ez.mask[1])
+ez.collision.set_from_mask(sphere, ez.mask[1])
 sphere.pos = 0, 0 , 0
 # Show the shape so we can see what it is doing, for dubugging:
 sphere.show()
@@ -40,21 +40,21 @@ box.name = "Box"
 pos = -2, 0 , -1
 to_pos = 0, 0, 2
 segment = ez.collision.rays.Segment( pos, to_pos, parent=render)
-ez.collision.set_target_mask(segment, ez.mask[2])
+ez.collision.set_from_mask(segment, ez.mask[2])
 segment.show()
 segment.name = "Segment"
 
 from_pos = 1, 0, 1
 towards = 0, 0, -1
 ray = ez.collision.rays.Ray( from_pos, towards, parent=render )
-ez.collision.set_target_mask(ray, ez.mask[2])
+ez.collision.set_from_mask(ray, ez.mask[2])
 ray.show()
 ray.name = "Ray"
 
 pos = 2, 0, 0
 direction = 0, 0, 1
 line = ez.collision.rays.Line( pos, direction, parent=render)
-ez.collision.set_target_mask(line, ez.mask[2])
+ez.collision.set_from_mask(line, ez.mask[2])
 line.show()
 line.name = "line"
 

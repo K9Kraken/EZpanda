@@ -165,6 +165,7 @@ class Handler():
 
     def add_collider(self, EZnode):
         self.panda_traverser.add_collider(EZnode.panda_node, self.panda_handler)
+        # Apened handler to the EZnode so when EZnode.delete() is called it can remove itself from the handler:
         EZnode._colliders.append(self)
 
     def remove_collider(self, EZnode):
@@ -279,11 +280,11 @@ class Collision:
     MousePicker = MousePicker
     MousePickre2D = MousePickre2D
 
-    def get_mask(self, EZnode):
-        return EZnode.panda_node.get_collide_mask()
-
     def set_mask(self, EZnode, mask):
         EZnode.panda_node.set_collide_mask(mask)
+
+    def get_mask(self, EZnode):
+        return EZnode.panda_node.get_collide_mask()
 
     def add_mask(self, EZnode, mask):
         EZnode.panda_node.set_collide_mask(self.get_mask(EZnode) | mask)
@@ -294,19 +295,19 @@ class Collision:
     def has_mask(self, EZnode, mask):
         return mask & self.get_mask(EZnode) == mask
 
-    #Only works on Collision shapes and Rays:
-    def get_target_mask(self, EZnode):
-        return EZnode.panda_node.node().get_from_collide_mask()
-
-    def set_target_mask(self, EZnode, mask):
+    # Only works on Collision shapes and Rays:
+    def set_from_mask(self, EZnode, mask):
         EZnode.panda_node.node().set_from_collide_mask(mask)
 
-    def add_target_mask(self, EZnode, mask):
-        EZnode.panda_node.node().set_from_collide_mask(self.get_target_mask(EZnode) | mask)
+    def get_from_mask(self, EZnode):
+        return EZnode.panda_node.node().get_from_collide_mask()
 
-    def remove_target_mask(self, EZnode, mask):
-        EZnode.panda_node.node().set_from_collide_mask(self.get_target_mask(EZnode) ^ mask)
+    def add_from_mask(self, EZnode, mask):
+        EZnode.panda_node.node().set_from_collide_mask(self.get_from_mask(EZnode) | mask)
 
-    def has_target_mask(self, EZnode, mask):
-        return mask & self.get_target_mask(EZnode) == mask
+    def remove_from_mask(self, EZnode, mask):
+        EZnode.panda_node.node().set_from_collide_mask(self.get_from_mask(EZnode) ^ mask)
+
+    def has_from_mask(self, EZnode, mask):
+        return mask & self.get_from_mask(EZnode) == mask
 
