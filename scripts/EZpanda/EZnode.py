@@ -118,6 +118,9 @@ class Node():
     def get_distance_to(self, node ):
         return self.panda_node.get_distance( node.panda_node )
 
+    def get_relative_vector(self, node, vec3):
+        return self.panda_node.get_relative_vector(node.panda_node, vec3)
+
     def apply_transform(self):
         # state = self.panda_node.get_state() #Get the render state so we can restore it after flattening: (may not be needed)
         self.panda_node.flatten_light()
@@ -140,7 +143,7 @@ class Node():
 
     @property
     def parent(self):
-        return self.__parent
+        return self._parent
     @parent.setter
     def parent(self, EZnode):
         if EZnode:
