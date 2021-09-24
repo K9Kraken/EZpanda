@@ -18,7 +18,15 @@ shader = ez.load.shader('shaded.glsl')
 # Create a model:
 model = ez.Model(mesh, parent=render)
 model.shader = shader
+# 'texture0' is the name of the variable inside the shader:
 model.set_shader_input('texture0', dirt)
+
+# Other shader inputing examples:
+# model.set_shader_inputs(texture0=dirt)
+# model.set_shader_inputs(texture0=dirt, color=(1,0,0), pos=model.pos)
+# d = {'texture0': dirt, 'color', (1,0,0)}
+# model.set_shader_inputs(**d)
+
 
 # Change model position:
 model.pos = 2, 0, 0

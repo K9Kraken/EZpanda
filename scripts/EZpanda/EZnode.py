@@ -123,10 +123,20 @@ class Node():
         self.panda_node.flatten_light()
         # self.panda_node.set_state(state)
 
+        # set_shader_input('a', 1)
     def set_shader_input(self, shader_value_name, value):
         if isinstance(value, ez.Node):
             value = value.panda_node
         self.panda_node.set_shader_input(shader_value_name, value)
+
+        # set_shader_inputs(a=1, b=2, ..) or set_shader_inputs(**dict):
+    def set_shader_inputs(self, **kwargs):
+        for key, value in kwargs.items():
+            if isinstance(value, ez.Node):
+                print(kwargs[key])
+                kwargs[key] = value.panda_node
+                print(kwargs[key])
+        self.panda_node.set_shader_inputs(**kwargs)
 
     @property
     def parent(self):
