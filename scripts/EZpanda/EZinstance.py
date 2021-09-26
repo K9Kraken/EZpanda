@@ -37,7 +37,7 @@ class HardInstance(Node):
 
     def __init__(self, mesh, total_instances, boundsWHD, hpr=(0,0,0), parent=None):
         Node.__init__(self, parent=parent)
-        self._mesh = mesh
+        self._mesh = NodePath( mesh.node().copy_subgraph() )
         self._mesh.set_hpr(hpr)
         self._mesh.flatten_strong()
         self._mesh.reparent_to(self.panda_node)
