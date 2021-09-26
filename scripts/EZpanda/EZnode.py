@@ -55,8 +55,10 @@ class Node():
         # Used by delete() to remove self from any collision handlers:
         self._colliders = []
 
+
         if panda_node:
             if panda_node.has_tag('copy'):
+                # Here we copy the panda node so we don't have to keep loading it:
                 panda_node = NodePath( panda_node.node().copy_subgraph() )
             self.panda_node = panda_node
         else:
@@ -284,5 +286,5 @@ class Node():
     def transparency(self):
         return self.panda_node.get_transparency()
     @transparency.setter
-    def transparency(self, bool_):
-        self.panda_node.set_transparency(bool_)
+    def transparency(self, transparency_flag):
+        self.panda_node.set_transparency(transparency_flag)

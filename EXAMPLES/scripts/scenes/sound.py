@@ -30,9 +30,9 @@ def input(event):
     device, name, state = event
 
     if name=='q' and state==1:
-        if music.get_status() is music.READY:
+        if music.get_status() is ez.flags.sound.READY:
             music.play()
-        elif music.get_status() is music.PLAYING:
+        elif music.get_status() is ez.flags.sound.PLAYING:
             music.stop()
 
     if name=='w' and state==1:
@@ -45,7 +45,7 @@ def input(event):
 
     if name=='r' and state==1:
         for s in sounds:
-            if s.get_status() is s.READY:
+            if s.get_status() is ez.flags.sound.READY:
                 s.rate=ez.random.float()*2.0+0.2
                 s.play()
                 break

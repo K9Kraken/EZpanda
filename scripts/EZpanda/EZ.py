@@ -5,6 +5,8 @@ import random as pyrandom
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import BamCache, AntialiasAttrib, ClockObject, Filename, SamplerState, Shader, PythonTask, BitMask32, MouseButton
 from panda3d.core import Vec2, Vec3, Vec4, Point2, Point3, Point4, VBase2, VBase3, VBase4
+from panda3d.core import TransparencyAttrib
+from panda3d.core import AudioSound
 
 from scripts.EZpanda.EZnode import Node
 from scripts.EZpanda.EZline import Line
@@ -23,6 +25,33 @@ from scripts.EZpanda import EZlights
 
 from panda3d.core import ExecutionEnvironment
 PATH = ExecutionEnvironment.get_environment_variable("MAIN_DIR")+'/'
+
+
+class Sound:
+    BAD = AudioSound.BAD
+    READY = AudioSound.READY
+    PLAYING = AudioSound.PLAYING
+
+class Transparency:
+    # No transparency:
+    NONE = TransparencyAttrib.M_none
+    # Normal transparency, panda will sort back-to-front:
+    ALPHA = TransparencyAttrib.M_alpha
+    # Assume textures use premultiplied alpha:
+    PREMULTIPLIED_ALPHA = TransparencyAttrib.M_premultiplied_alpha
+    # Uses ms buffer, alpha values modified to 1.0:
+    MULTISAMPLE = TransparencyAttrib.M_multisample
+    # Uses ms buffer, alpha values not modified:
+    MULTISAMPLE_MASK = TransparencyAttrib.M_multisample_mask
+    # Only writes pixels with alpha >= 0.5:
+    BINARY = TransparencyAttrib.M_binary
+    # Opaque parts first, then sorted transparent parts:
+    DUAL = TransparencyAttrib.M_dual
+
+
+class Flags:
+    sound = Sound()
+    transparency = Transparency()
 
 
 class Random:
@@ -135,6 +164,9 @@ config = {
 
 
 class EZ(dict):
+
+    flags = Flags()
+
     __slots__=(
         'panda_showbase',
         'is_button_down',

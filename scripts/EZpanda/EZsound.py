@@ -1,5 +1,5 @@
 from direct.showbase.Audio3DManager import Audio3DManager as PandaAudio3DManager
-from panda3d.core import AudioSound, AudioManager as PandaAudioManager
+from panda3d.core import AudioManager as PandaAudioManager
 
 
 
@@ -13,10 +13,6 @@ class Sound:
         'get_length'
         )
 
-    #State flags:
-    BAD = AudioSound.BAD
-    READY = AudioSound.READY
-    PLAYING = AudioSound.PLAYING
     def __init__(self, panda_sound):
         self.panda_sound = panda_sound
 
