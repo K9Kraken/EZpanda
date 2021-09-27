@@ -86,4 +86,5 @@ class Camera(Node):
         return self.lens.get_far()
     @far.setter
     def far(self, value):
+         # Setting this while panda is still loading looks to cause a lens offset issue:
         self.lens.set_far(value)

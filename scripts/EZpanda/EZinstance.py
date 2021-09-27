@@ -1,5 +1,5 @@
 from scripts.EZpanda.EZnode import Node
-from panda3d.core import Texture, GeomEnums, BoundingBox, BoundingSphere, RigidBodyCombiner, NodePath
+from panda3d.core import Texture, GeomEnums, BoundingVolume, BoundingBox, BoundingSphere, RigidBodyCombiner, NodePath
 import struct
 
 
@@ -44,10 +44,10 @@ class HardInstance(Node):
         self._total_instances = total_instances
         self._bounds = boundsWHD
 
-        self._mesh.node().set_bounds( BoundingBox((0,0,0), boundsWHD) )
+        # Set the bounding volume:
+        self._mesh.node().setBoundsType( BoundingVolume.BTBox )
+        self._mesh.node().set_bounds( BoundingBox(-boundsWHD*0.5, boundsWHD*0.5) )
         self._mesh.node().set_final(True)
-
-        self._mesh.set_pos( self._mesh.node().get_bounds().get_center() * -1.0 )
 
         self._buffer = Texture("I")
         self._buffer.setup_buffer_texture(self._total_instances*16, Texture.T_float, Texture.F_rgba32, GeomEnums.UH_static)
@@ -56,21 +56,41 @@ class HardInstance(Node):
         self._mesh.set_instance_count(self._total_instances)
         self._mesh.set_shader_input('texbuffer', self._buffer)
 
+
     def get_bounds(self):
         return self._bounds
+
+    def show_bounds(self):
+        self._mesh.show_bounds()
+
+    def hide_bounds(self):
+        self._mesh.hide_bounds()
 
     def get_total_instances(self):
         return self._total_instances
 
-    def set_instance_pos(self, index, pos):
-            index *= 16
-            self._image_buffer[index:index+16] = struct.pack('ffff', *pos, 1)
+    def set_instance_pos(self, index, pos, size=1):
+        index *= 16
+        x, y, z = pos
+        self._image_buffer[index:index+16] = struct.pack('ffff', x, y, z, size)
+        self._buffer.modify_ram_image()
+
+    def set_instances_pos(self, dict_INDEX_POS):
+        for index, pos in dict_INDEX_POS.items():
+            x, y, z = pos
+            self._image_buffer[offset:offset+16] = struct.pack('ffff', x, y, z, 1)
+        self._buffer.modify_ram_image()
 
     def generate_random_pos(self, scale_min=1.0, scale_max=1.0):
-        w, h, d = self._bounds
+        w, h, d = self._bounds*0.5
+
         for i in range(self._total_instances):
+            x = ez.random.uniform(-w, w)
+            y = ez.random.uniform(-h, h)
+            z = ez.random.uniform(-d, d)
             offset = i*16
-            self._image_buffer[offset:offset+16] = struct.pack('ffff', ez.random.float()*w, ez.random.float()*h, ez.random.float()*d, ez.random.uniform(scale_min, scale_max))
+            self._image_buffer[offset:offset+16] = struct.pack('ffff', x, y, z, ez.random.uniform(scale_min, scale_max))
+        self._buffer.modify_ram_image()
 
 
 
