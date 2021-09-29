@@ -85,11 +85,8 @@ class HardInstance(Node):
         w, h, d = self._bounds*0.5
 
         for i in range(self._total_instances):
-            x = ez.random.uniform(-w, w)
-            y = ez.random.uniform(-h, h)
-            z = ez.random.uniform(-d, d)
             offset = i*16
-            self._image_buffer[offset:offset+16] = struct.pack('ffff', x, y, z, ez.random.uniform(scale_min, scale_max))
+            self._image_buffer[offset:offset+16] = struct.pack('ffff', ez.random.uniform(-w, w), ez.random.uniform(-h, h), ez.random.uniform(-d, d), ez.random.uniform(scale_min, scale_max))
         self._buffer.modify_ram_image()
 
 

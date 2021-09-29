@@ -175,7 +175,7 @@ class Handler():
     def get_collisions(self, traverse_node, relative_space=ez.panda_showbase.render):
         collisions = []
         self.panda_traverser.traverse(traverse_node.panda_node)
-        if self.panda_handler.get_num_entries() > 0:
+        if self.panda_handler.get_num_entries():
             self.panda_handler.sort_entries()
             for entry in self.panda_handler.get_entries():
                 collision = {
