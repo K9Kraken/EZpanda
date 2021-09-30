@@ -174,7 +174,6 @@ class World:
         self.physics_world.attach_ghost(body.physics_node)
         body._world = None
 
-
     def ray_test_closest(self, fr, to, mask=ez.mask['ALL'] ):
         result = self.physics_world.ray_test_closest(fr, to, mask)
         if result.has_hit():

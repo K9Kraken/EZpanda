@@ -1,6 +1,6 @@
 from scripts.EZpanda.EZnode import Node
 from panda3d.core import Texture, GeomEnums, BoundingVolume, BoundingBox, BoundingSphere, RigidBodyCombiner, NodePath
-import struct
+from struct import pack_into
 
 
 
@@ -70,23 +70,20 @@ class HardInstance(Node):
         return self._total_instances
 
     def set_instance_pos(self, index, pos, size=1):
-        index *= 16
         x, y, z = pos
-        self._image_buffer[index:index+16] = struct.pack('ffff', x, y, z, size)
+        pack_into('ffff', self._image_buffer, index*16,  x, y, z, size)
         self._buffer.modify_ram_image()
 
-    def set_instances_pos(self, dict_INDEX_POS):
-        for index, pos in dict_INDEX_POS.items():
+    def set_instances_pos(self, index_pos_size):
+        for index, pos, size in index_pos_size:
             x, y, z = pos
-            self._image_buffer[offset:offset+16] = struct.pack('ffff', x, y, z, 1)
+            pack_into('ffff', self._image_buffer, index*16, x, y, z, size)
         self._buffer.modify_ram_image()
 
     def generate_random_pos(self, scale_min=1.0, scale_max=1.0):
         w, h, d = self._bounds*0.5
-
-        for i in range(self._total_instances):
-            offset = i*16
-            self._image_buffer[offset:offset+16] = struct.pack('ffff', ez.random.uniform(-w, w), ez.random.uniform(-h, h), ez.random.uniform(-d, d), ez.random.uniform(scale_min, scale_max))
+        for index in range(self._total_instances):
+            pack_into('ffff', self._image_buffer, index*16, ez.random.uniform(-w, w), ez.random.uniform(-h, h), ez.random.uniform(-d, d), ez.random.uniform(scale_min, scale_max))
         self._buffer.modify_ram_image()
 
 
