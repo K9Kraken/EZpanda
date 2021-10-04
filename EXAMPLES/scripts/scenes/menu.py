@@ -64,6 +64,9 @@ def input(event):
     elif name=='p' and state==0:
         scene = ez.load.scene('shadow')
         ez.set_scene(scene)
+    elif name=='q' and state==0:
+        scene = ez.load.scene('depth')
+        ez.set_scene(scene)
 
 
     if name=='escape' and state==0:
@@ -75,7 +78,7 @@ def logic(dt):
     pass
 
 
-keys=['a','b', 'c','d','e','f','g','h','i','j','k','l','m','n','o','p']
+keys=['a','b', 'c','d','e','f','g','h','i','j','k','l','m','n','o','p','q']
 def enter():
 
     ez.add_input_events(['escape']+keys)
@@ -103,6 +106,7 @@ def enter():
         N - Gamepad
         O - Particles
         P - Shadow
+        Q - Depth Map
         """
     text.text = choices
     text.parent = aspect2D

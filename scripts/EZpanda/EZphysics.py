@@ -244,13 +244,13 @@ class Physics:
     #Phyiscs world:
     World = World
 
-    def enable_debug(self, world):
+    def enable_debug(self, world, render_node):
         node = BulletDebugNode('Debug')
         node.showWireframe(True)
         node.showConstraints(True)
         node.showBoundingBoxes(True)
         node.showNormals(True)
-        node = ez.panda_showbase.render.attach_new_node(node)
+        node = render_node.panda_node.attach_new_node(node)
         node.show()
         world.physics_world.set_debug_node(node.node())
         return node
