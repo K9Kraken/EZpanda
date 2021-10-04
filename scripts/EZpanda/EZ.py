@@ -7,6 +7,7 @@ from panda3d.core import BamCache, AntialiasAttrib, ClockObject, Filename, Sampl
 from panda3d.core import Vec2, Vec3, Vec4, Point2, Point3, Point4, VBase2, VBase3, VBase4
 from panda3d.core import TransparencyAttrib
 from panda3d.core import AudioSound
+from direct.interval.LerpInterval import LerpPosInterval
 
 from scripts.EZpanda.EZnode import Node
 from scripts.EZpanda.EZline import Line
@@ -28,11 +29,13 @@ PATH = ExecutionEnvironment.get_environment_variable("MAIN_DIR")+'/'
 
 
 class Sound:
+    __slots__=()
     BAD = AudioSound.BAD
     READY = AudioSound.READY
     PLAYING = AudioSound.PLAYING
 
 class Transparency:
+    __slots__=()
     # No transparency:
     NONE = TransparencyAttrib.M_none
     # Normal transparency, panda will sort back-to-front:
@@ -48,10 +51,18 @@ class Transparency:
     # Opaque parts first, then sorted transparent parts:
     DUAL = TransparencyAttrib.M_dual
 
+class Interval:
+    __slots__=()
+    EASE_IN = 'easeIn'
+    EASE_OUT = 'easeOut'
+    EASE_IN_OUT = 'easeInOut'
+    NO_BLEND = 'noBlend'
 
 class Flags:
+    __slots__=()
     sound = Sound()
     transparency = Transparency()
+    interval = Interval()
 
 
 class Random:
@@ -74,6 +85,11 @@ class Random:
         z = pyrandom.uniform(zlow, zhigh)
         return x, y, z
 
+
+class Intervals:
+    __slots__=()
+    def pos(self, node, start_pos, end_pos, duration, blend='noBlend', name=None, relative_to=None, fluid=1, bake_in_start=1):
+        return LerpPosInterval(node.panda_node, duration, end_pos, startPos=start_pos, other=relative_to, blendType=blend, name=name, fluid=fluid, bakeInStart=bake_in_start)
 
 
 class Enable: #for ez.enable
@@ -181,6 +197,7 @@ class EZ(dict):
         'audio',
         'audio3D',
         'music',
+        'intervals',
         'gamepads',
         'particles',
         'collision',
@@ -268,6 +285,7 @@ class EZ(dict):
         self.audio = AudioManager(self.panda_showbase.sfxManagerList[0])
         self.audio3D = Audio3DManager(self.audio)
         self.music = AudioManager(self.panda_showbase.musicManager)
+        self.intervals = Intervals()
         self.gamepads = None
         self.particles = None
         self.collision = None

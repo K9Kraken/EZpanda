@@ -36,13 +36,20 @@ class RigidBody(Node):
         '_world'
         )
 
-    def __init__(self, shape, parent=None, mass=0.0):
+    def __init__(self, shape, parent=None, mass=1.0):
         self.physics_node = BulletRigidBodyNode('rigid_node')
         self.physics_node.add_shape(shape)
         self.physics_node.mass = mass
         Node.__init__(self, parent=parent, panda_node=NodePath(self.physics_node))
 
         self._world = None
+
+    @property
+    def kinematic(self):
+        return self.physics_node.is_kinematic()
+    @kinematic.setter
+    def kinematic(self, bool_):
+        self.physics_node.set_kinematic(bool_)
 
     @property
     def active(self):
@@ -113,6 +120,13 @@ class GhostBody(Node):
         Node.__init__(self, parent=parent, panda_node=NodePath(self.physics_node))
 
         self._world = None
+
+    @property
+    def kinematic(self):
+        return self.physics_node.is_kinematic()
+    @kinematic.setter
+    def kinematic(self, bool_):
+        self.physics_node.set_kinematic(bool_)
 
     def get_overlapping_nodes(self):
         nodes = []
@@ -234,8 +248,8 @@ class Physics:
         node = BulletDebugNode('Debug')
         node.showWireframe(True)
         node.showConstraints(True)
-        node.showBoundingBoxes(False)
-        node.showNormals(False)
+        node.showBoundingBoxes(True)
+        node.showNormals(True)
         node = ez.panda_showbase.render.attach_new_node(node)
         node.show()
         world.physics_world.set_debug_node(node.node())
