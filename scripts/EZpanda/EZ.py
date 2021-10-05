@@ -88,7 +88,7 @@ class Random:
 
 class Intervals:
     __slots__=()
-    def pos(self, node, start_pos, end_pos, duration, blend='noBlend', name=None, relative_to=None, fluid=1, bake_in_start=1):
+    def pos(self, node, start_pos, end_pos, duration, blend='noBlend', name=None, relative_to=None, fluid=0, bake_in_start=1):
         return LerpPosInterval(node.panda_node, duration, end_pos, startPos=start_pos, other=relative_to, blendType=blend, name=name, fluid=fluid, bakeInStart=bake_in_start)
 
 

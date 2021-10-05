@@ -12,7 +12,7 @@ plane = ez.Model(mesh, parent=render)
 plane.shader = shader
 
 plane.depth_write = False
-plane.transparency = True
+plane.transparency = ez.flags.transparency.ALPHA
 
 
 depth = camera.create_depth_map()
