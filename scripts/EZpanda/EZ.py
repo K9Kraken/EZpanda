@@ -8,6 +8,7 @@ from panda3d.core import Vec2, Vec3, Vec4, Point2, Point3, Point4, VBase2, VBase
 from panda3d.core import TransparencyAttrib
 from panda3d.core import AudioSound
 from direct.interval.LerpInterval import LerpPosInterval
+from direct.interval.IntervalGlobal import Sequence, Parallel
 
 from scripts.EZpanda.EZnode import Node
 from scripts.EZpanda.EZline import Line
@@ -87,6 +88,8 @@ class Random:
 
 
 class Intervals:
+    Sequence = Sequence
+    Parallel = Parallel
     __slots__=()
     def pos(self, node, start_pos, end_pos, duration, blend='noBlend', name=None, relative_to=None, fluid=0, bake_in_start=1):
         return LerpPosInterval(node.panda_node, duration, end_pos, startPos=start_pos, other=relative_to, blendType=blend, name=name, fluid=fluid, bakeInStart=bake_in_start)

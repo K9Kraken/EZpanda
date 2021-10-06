@@ -24,6 +24,8 @@ world = ez.physics.World()
 # Create an infinite plane that is facing up at position 0:
 shape = ez.physics.shapes.Plane((0,0,1), 0)
 plane = ez.physics.bodys.Rigid(shape)
+# Setting mass to 0 so it does not react to gravity or collision:
+plane.mass = 0
 
 # Tell phyisics what the plane will collide with:
 ez.physics.set_mask(plane, MASK_COLLISION)
@@ -34,6 +36,8 @@ world.add_body(plane)
 
 # Just for parenting all the bodys to:
 bodys = ez.Node(parent=render)
+
+#plane.parent
 
 def make_body(mesh_name, image_name):
 

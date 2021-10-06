@@ -42,11 +42,11 @@ class HardInstance(Node):
         self._mesh.flatten_strong()
         self._mesh.reparent_to(self.panda_node)
         self._total_instances = total_instances
-        self._bounds = boundsWHD
+        self._bounds = ez.Point3(boundsWHD)
 
         # Set the bounding volume:
         self._mesh.node().setBoundsType( BoundingVolume.BTBox )
-        self._mesh.node().set_bounds( BoundingBox(-boundsWHD*0.5, boundsWHD*0.5) )
+        self._mesh.node().set_bounds( BoundingBox(-self._bounds*0.5, self._bounds*0.5) )
         self._mesh.node().set_final(True)
 
         self._buffer = Texture("I")
