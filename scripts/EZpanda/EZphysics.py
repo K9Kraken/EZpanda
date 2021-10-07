@@ -168,6 +168,9 @@ class World:
         self.update = self.physics_world.do_physics
         self.physics_world.set_gravity(gravity)
 
+        # Seems to prevent false Collisions on init:
+        self.update(1)
+
     def add_body(self, body):
         if body._world:
             body._world.physics_world.remove_rigid_body(body.physics_node)
@@ -222,13 +225,15 @@ class World:
             return hit
         return None
 
-    def contact_test(self, body):
-        result = self.physics_world.contact_test(body.panda_node.node())
+    def contact_test(self, body, filtering=False):
+        result = self.physics_world.contact_test(body.panda_node.node(), filtering)
         hits = []
         for contact in result.get_contacts():
             hit = {
             'NODE1': contact.get_node0().get_python_tag('EZnode'),
-            'NODE2': contact.get_node1().get_python_tag('EZnode')
+            'NODE2': contact.get_node1().get_python_tag('EZnode'),
+            # Crashes when querring manifold attributes when it is stored in a DICT that is in a LIST. Some sort of pointer issue:
+            #'MPOINT' : contact.get_manifold_point()
             }
             hits.append(hit)
         return hits
