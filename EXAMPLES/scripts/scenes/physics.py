@@ -17,6 +17,7 @@ camera.pos = 0, -30, 30
 camera.look_at(cam_target)
 
 
+
 # Create the physics world:
 world = ez.physics.World()
 

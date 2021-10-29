@@ -10,9 +10,13 @@ from scripts.EZpanda.EZnode import Node
 class Shapes:
     __slots__=()
 
+    # Sphere( radius )
     Sphere = BulletSphereShape
+    # Box( (x, y, z) )
     Box = BulletBoxShape
+    # Capsule(radius, height, up: BulletUpAxis)
     Capsule = BulletCapsuleShape
+    # Cylinder(radius, height, up: BulletUpAxis)
     Cylinder = BulletCylinderShape
     Plane = BulletPlaneShape
     Cone = BulletConeShape
@@ -66,6 +70,13 @@ class RigidBody(Node):
         self.physics_node.set_linear_velocity(vector)
 
     @property
+    def angular_velocity(self):
+        return self.physics_node.get_angular_velocity()
+    @angular_velocity.setter
+    def angular_velocity(self, vector):
+        self.physics_node.set_angular_velocity(vector)
+
+    @property
     def angular_damping(self):
         return self.physics_node.get_angular_damping()
     @angular_damping.setter
@@ -78,6 +89,34 @@ class RigidBody(Node):
     @linear_damping.setter
     def linear_damping(self, value):
         self.physics_node.set_linear_damping(value)
+
+    @property
+    def linear_factor(self):
+        return self.physics_node.get_linear_factor()
+    @linear_factor.setter
+    def linear_factor(self, vector):
+        self.physics_node.set_linear_factor(vector)
+
+    @property
+    def angular_factor(self):
+        return self.physics_node.get_angular_factor()
+    @angular_factor.setter
+    def angular_factor(self, vector):
+        self.physics_node.set_angular_factor(vector)
+
+    @property
+    def linear_sleep_threshold(self):
+        return self.physics_node.get_linear_sleep_threshold()
+    @linear_sleep_threshold.setter
+    def linear_sleep_threshold(self, float_):
+        self.physics_node.set_linear_sleep_threshold(float_)
+
+    @property
+    def angular_sleep_threshold(self):
+        return self.physics_node.get_angular_sleep_threshold()
+    @angular_sleep_threshold.setter
+    def angular_sleep_threshold(self, float_):
+        self.physics_node.set_angular_sleep_threshold(float_)
 
     @property
     def mass(self):
@@ -158,15 +197,21 @@ class Bodys:
 
 
 class World:
+    START = 0
+    CONTACT = 1
+    END = 3
     __slots__=(
         'physics_world',
-        'update'
+        'update',
+        '_contacts'
         )
 
     def __init__(self, gravity=(0,0,-9.81)):
         self.physics_world = BulletWorld()
         self.update = self.physics_world.do_physics
         self.physics_world.set_gravity(gravity)
+
+        self._contacts = {}
 
         # Seems to prevent false Collisions on init:
         self.update(1)
@@ -225,18 +270,56 @@ class World:
             return hit
         return None
 
-    def contact_test(self, body, filtering=False):
-        result = self.physics_world.contact_test(body.panda_node.node(), filtering)
-        hits = []
-        for contact in result.get_contacts():
-            hit = {
-            'NODE1': contact.get_node0().get_python_tag('EZnode'),
-            'NODE2': contact.get_node1().get_python_tag('EZnode'),
-            # Crashes when querring manifold attributes when it is stored in a DICT that is in a LIST. Some sort of pointer issue:
-            #'MPOINT' : contact.get_manifold_point()
-            }
-            hits.append(hit)
-        return hits
+    def contact_test(self, body, use_filter=False):
+        result = self.physics_world.contact_test(body.panda_node.node(), use_filter=use_filter)
+        nodes = []
+        contacts = []
+        for contact in result.contacts:
+            if contact.node1 not in nodes:
+                nodes.append(contact.node1)
+
+                contact = {
+                'NODE': contact.node1.get_python_tag('EZnode'),
+                'NORMAL': contact.manifold_point.normal_world_on_b,
+                'POS': contact.manifold_point.position_world_on_b,
+                'LOCAL_POS': contact.manifold_point.local_point_b
+                }
+
+                contacts.append(contact)
+        return contacts
+
+    def constant_contact_test(self, bodys, use_filter=False):
+        for nodes in list(self._contacts):
+            if self._contacts[nodes]['STATUS'] is self.END:
+                del( self._contacts[nodes] )
+            else:
+                self._contacts[nodes]['STATUS'] = self.END
+
+        for body in bodys:
+            result = self.physics_world.contact_test(body.panda_node.node(), use_filter=use_filter)
+            no_count = []
+            if result.contacts:
+                for contact in result.contacts:
+                    # Stop counting the same node:
+                    if contact.node1 not in no_count:
+                        no_count.append(contact.node1)
+                        nodes = contact.node0, contact.node1
+
+                        # Prevent counting the same hit again:
+                        if (contact.node1, contact.node0) not in self._contacts:
+                            if nodes in self._contacts:
+                                self._contacts[nodes]['STATUS'] = self.CONTACT
+                            else:
+                                self._contacts[nodes] = {}
+                                self._contacts[nodes]['STATUS'] = self.START
+
+                            self._contacts[nodes]['NODE0'] = contact.node0.get_python_tag('EZnode')
+                            self._contacts[nodes]['NODE1'] = contact.node1.get_python_tag('EZnode')
+                            self._contacts[nodes]['NORMAL'] = contact.manifold_point.normal_world_on_b
+                            self._contacts[nodes]['POS'] = contact.manifold_point.position_world_on_b
+                            self._contacts[nodes]['LOCAL_POS'] = contact.manifold_point.local_point_b
+
+        return list(self._contacts.values())
 
 
 

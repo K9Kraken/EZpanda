@@ -10,6 +10,9 @@ from scripts.EZpanda.EZ import EZ, config
 
 config['window-title'] = "EZpanda Examples"
 
+# Setting in custom build of Panda3D, hopefully will be added in master:
+config['bullet-split-impulse'] = True
+
 # Load ez with config (ez is added to builtins so is global to all modules):
 ez = EZ(config)
 

@@ -76,6 +76,66 @@ class Sound3D(Sound):
 
 
 
+
+class GenSound:
+    def __init__(self, file_name, instance_count):
+        self.sounds = []
+        self.count = 0
+        self.limit = instance_count - 1
+        for i in range(instance_count):
+            self.sounds.append( ez.load.sound(file_name) )
+
+    def play(self):
+        self.sounds[self.count].play()
+        self.count += 1
+        if self.count > self.limit:
+            self.count = 0
+
+    def set_volume(self, float_):
+        for sound in self.sounds:
+            sound.volume = float_
+
+
+
+class GenSound3D:
+    def __init__(self, file_name, instance_count):
+        self.sounds = []
+        self.count = 0
+        self.limit = instance_count - 1
+        for i in range(instance_count):
+            self.sounds.append( ez.load.sound3D(file_name) )
+
+    def play(self):
+        self.sounds[self.count].play()
+        self.count += 1
+        if self.count > self.limit:
+            self.count = 0
+
+    def play_on(self, node):
+        sound = self.sounds[self.count]
+        sound.node = node
+        sound.play()
+        self.count += 1
+        if self.count > self.limit:
+            self.count = 0
+
+    def play_av_on(self, node):
+        for sound in self.sounds:
+            if sound.get_status() == ez.flags.sound.READY:
+                sound.node = node
+                sound.play()
+                break
+
+    def set_node(self, node):
+        for sound in sounds:
+            sound.node = node
+
+    def set_volume(self, float_):
+        for sound in self.sounds:
+            sound.volume = float_
+
+
+
 class AudioManager:
     __slots__=(
         'panda_audio'

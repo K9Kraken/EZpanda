@@ -12,8 +12,8 @@ class RenderState:
         'get_depth_offset'
         )
 
-    def __init__(self, EZnode, state_name):
-        self.name = state_name
+    def __init__(self, EZnode, name):
+        self.name = name
         state = EZnode.panda_node.get_state()
         self.panda_node = NodePath('')
         self.panda_node.set_state(state)
@@ -54,7 +54,6 @@ class Node():
         self._shader = None
         # Used by delete() to remove self from any collision handlers:
         self._colliders = []
-
 
         if panda_node:
             if panda_node.has_tag('copy'):
@@ -110,7 +109,6 @@ class Node():
                 children.append(EZnode)
         return children
 
-
     def look_at(self, node_or_pos):
         if isinstance(node_or_pos, ez.Node):
             self.panda_node.look_at(node_or_pos.panda_node)
@@ -119,6 +117,9 @@ class Node():
 
     def get_distance_to(self, node ):
         return self.panda_node.get_distance( node.panda_node )
+
+    def get_facing_vector(self):
+        return self.parent.panda_node.get_relative_vector(self.panda_node, (0,1,0))
 
     def get_relative_vector(self, node, vec3):
         return self.panda_node.get_relative_vector(node.panda_node, vec3)
@@ -257,8 +258,8 @@ class Node():
         self.panda_node.set_scale(value)
 
     # Render settings:
-    def copy_render_state(self, state_name):
-        return RenderState(self, state_name)
+    def copy_render_state(self, custom_name):
+        return RenderState(self, custom_name)
 
     def set_render_state(self, state):
         self.panda_node.set_state(state.panda_node.get_state())

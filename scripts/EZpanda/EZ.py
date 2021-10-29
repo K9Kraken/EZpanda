@@ -23,7 +23,7 @@ from scripts.EZpanda.EZtext import Text
 from scripts.EZpanda.EZcamera import Camera
 from scripts.EZpanda.EZtextureBuffer import TextureBuffer
 from scripts.EZpanda.EZproceduralMesh import ProceduralMesh
-from scripts.EZpanda.EZsound import AudioManager, Audio3DManager
+from scripts.EZpanda.EZsound import AudioManager, Audio3DManager, GenSound, GenSound3D
 from scripts.EZpanda import EZlights
 
 
@@ -53,6 +53,7 @@ class Transparency:
     BINARY = TransparencyAttrib.M_binary
     # Opaque parts first, then sorted transparent parts:
     DUAL = TransparencyAttrib.M_dual
+
 
 class Interval:
     __slots__=()
@@ -88,6 +89,28 @@ class Random:
         z = pyrandom.uniform(zlow, zhigh)
         return x, y, z
 
+    # Return value between 0 and 1.0
+    # Value of 1.0 gives a bias to 0.5
+    # Lower value gives bias closer to 0
+    # Higher value gives bias closer to 1.0
+    def bias(self, float_):
+        return pow(pyrandom.random(), 1/float_ )
+
+    # Return value between low and high
+    # Value of 1.0 with give a equal bias to low high
+    # Lower value gives bias closer to low
+    # Higher value gives bias closer to high
+    def bias_uniform(self, low, high, float_):
+        return low + (high-low) * pow(pyrandom.random(), 1/float_ )
+
+
+class Math:
+    __slots__=()
+
+    def distance(self, vector1, vector2):
+        v = vector1-vector2
+        return v.length()
+
 
 class Intervals:
     Sequence = Sequence
@@ -98,9 +121,13 @@ class Intervals:
     __slots__=()
 
     def pos(self, node, start_pos, end_pos, duration, blend='noBlend', name=None, relative_to=None, fluid=0, bake_in_start=1):
+        if relative_to:
+            relative_to = relative_to.panda_node
         return LerpPosInterval(node.panda_node, duration, end_pos, startPos=start_pos, other=relative_to, blendType=blend, name=name, fluid=fluid, bakeInStart=bake_in_start)
 
     def hpr(self, node, start_hpr, end_hpr, duration, blend='noBlend', name=None, relative_to=None, bake_in_start=1):
+        if relative_to:
+            relative_to = relative_to.panda_node
         return LerpHprInterval(node.panda_node, duration, end_hpr, startHpr=start_hpr, startQuat=None, other=relative_to, blendType=blend, name=name, bakeInStart=bake_in_start)
 
     def Function(self, func, fr, to, duration, blend='noBlend', args=[], name=None):
@@ -141,6 +168,12 @@ class Load: #for ez.load
 
     def sound3D(self, filename ):
         return ez.audio3D.load(filename)
+
+    def gen_sound(self, filename, instance_count):
+        return GenSound(filename, instance_count)
+
+    def gen_sound3D(self, filename, instance_count):
+        return GenSound3D(filename, instance_count)
 
     def music(self, filename ):
         return ez.music.load(filename)
@@ -206,6 +239,7 @@ class EZ(dict):
         'remove_task',
         '_cam_count',
         'random',
+        'math',
         'window',
         'mouse',
         'enable',
@@ -294,6 +328,7 @@ class EZ(dict):
 
         # EZ utils:
         self.random = Random()
+        self.math = Math()
         self.window = Window()
         self.mouse = Mouse()
         self.enable = Enable()
@@ -389,3 +424,4 @@ class EZ(dict):
 
     def quit(self):
         print('EZpanda EXIT')
+
