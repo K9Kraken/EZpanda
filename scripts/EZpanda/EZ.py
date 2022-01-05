@@ -26,9 +26,15 @@ from scripts.EZpanda.EZproceduralMesh import ProceduralMesh
 from scripts.EZpanda.EZsound import AudioManager, Audio3DManager, GenSound, GenSound3D
 from scripts.EZpanda import EZlights
 
+#from panda3d.core import ExecutionEnvironment
+#PATH = ExecutionEnvironment.get_environment_variable("MAIN_DIR")
+#PATH = str(Filename.from_os_specific(PATH))+'/'
 
-from panda3d.core import ExecutionEnvironment
-PATH = ExecutionEnvironment.get_environment_variable("MAIN_DIR")+'/'
+from sys import path
+
+PATH = path[0] + '/'
+
+
 
 
 class Sound:

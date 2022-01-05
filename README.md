@@ -73,5 +73,6 @@ Here is a list of the current examples:
         N - Gamepad
         O - Particles
         P - Shadow
+        Q - Depth Map
 ```
 
