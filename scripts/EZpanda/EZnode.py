@@ -69,8 +69,8 @@ class Node():
         self.panda_node.set_tag('panda_node', '')
 
         # Pass in functions:
-        self.show = self.panda_node.show
         self.hide = self.panda_node.hide
+        self.show = self.panda_node.show
         self.is_hidden = self.panda_node.is_hidden
         self.set_billboard_axis = self.panda_node.set_billboard_axis
         self.set_billboard_point_world = self.panda_node.set_billboard_point_world
@@ -176,21 +176,21 @@ class Node():
         return self.panda_node.get_hpr(node.panda_node)
 
     # Set relative to node:
-    def set_rx(self, node, x):
+    def set_rx(self, x, node):
         self.panda_node.set_x(node.panda_node, x)
-    def set_ry(self, node, y):
+    def set_ry(self, y, node):
         self.panda_node.set_y(node.panda_node, y)
-    def set_rz(self, node, z):
+    def set_rz(self, z, node):
         self.panda_node.set_z(node.panda_node, z)
-    def set_rpos(self, node, pos):
+    def set_rpos(self, pos, node):
         self.panda_node.set_pos(node.panda_node, pos)
-    def set_rh(self, node, h):
+    def set_rh(self, h, node):
         self.panda_node.set_h(node.panda_node, h)
-    def set_rp(self, node, p):
+    def set_rp(self, p, node):
         self.panda_node.set_p(node.panda_node, p)
-    def set_rr(self, node, r):
+    def set_rr(self, r, node):
         self.panda_node.set_r(node.panda_node, r)
-    def set_rhpr(self, node, hpr):
+    def set_rhpr(self, hpr, node):
         self.panda_node.set_hpr(node.panda_node, hpr)
 
     # Relative to parent:

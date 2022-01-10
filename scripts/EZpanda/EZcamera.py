@@ -26,8 +26,6 @@ class Camera(Node):
         self.set_aspect_ratio(ez.window.get_aspect_ratio())
 
         self._depth_map = None
-    def get_depth_map(self):
-        return self._depth_map
 
     def get_projected_ray(self, aspect2D_pos):
         near = Point3()
@@ -59,6 +57,9 @@ class Camera(Node):
         self._depth_map = depth_map
 
         return depth_map
+
+    def get_depth_map(self):
+        return self._depth_map
 
     @property
     def fov(self):

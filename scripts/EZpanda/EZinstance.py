@@ -71,7 +71,7 @@ class HardInstance(Node):
 
     def set_instance_pos(self, index, pos, size=1):
         x, y, z = pos
-        pack_into('ffff', self._image_buffer, index*16,  x, y, z, size)
+        pack_into('ffff', self._image_buffer, index*16, x, y, z, size)
         self._buffer.modify_ram_image()
 
     def set_instances_pos(self, index_pos_size):

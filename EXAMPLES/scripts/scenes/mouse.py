@@ -89,7 +89,7 @@ def input(event):
                 text.text+="\nSelected Normal: "+str(hit['NORMAL'])
                 text.text+="\nPosition: "+str(hit['POS'])
                 node = hit['NODE']
-                node.set_rr(node, -6.0)
+                node.set_rr(-6.0, node)
             else:
                 text.text="Nothing selected"
                 text.text+="\nPosition: "+str(ez.mouse.pos)

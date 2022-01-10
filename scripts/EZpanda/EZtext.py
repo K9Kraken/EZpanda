@@ -10,7 +10,7 @@ class Text(Node):
         'clear_frame',
         'clear_card'
         )
-    #Alignment modes:
+    #Alignment flags:
     A_BOXED_CENTER = TextNode.A_boxed_center
     A_BOXED_LEFT = TextNode.A_boxed_left
     A_BOXED_RIGHT = TextNode.A_boxed_right
@@ -18,7 +18,7 @@ class Text(Node):
     A_LEFT = TextNode.A_left
     A_RIHT = TextNode.A_right
 
-    #Font render modes:
+    #Render flags:
     RM_DISTANCE_FIELD = TextFont.RM_distance_field
     RM_EXTRUDE = TextFont.RM_extruded
     RM_INVALID = TextFont.RM_invalid
@@ -34,7 +34,7 @@ class Text(Node):
         self.panda_node.attach_new_node(self.panda_text)
         self.font = font
 
-        #Rotate by default so it will be facing the aspect2D camera:
+        #Rotate by default so it will be facing the aspect2D camera then apply the transform:
         self.panda_node.set_p(-90)
         self.panda_node.flatten_light()
 
@@ -54,8 +54,8 @@ class Text(Node):
     def text(self):
         return self.panda_text.get_text()
     @text.setter
-    def text(self, str_value):
-        self.panda_text.set_text(str_value)
+    def text(self, str_):
+        self.panda_text.set_text(str_)
 
     @property
     def font(self):

@@ -29,11 +29,11 @@ class Window:
     def get_aspect2D_edges(self):
         return self._aspect2D_edges
 
-    def get_display_mode(self, mode):
+    def get_display_mode(self, int_=0):
         display = ez.panda_showbase.pipe.get_display_information()
-        width = display.get_display_mode_width(mode)
-        height = display.get_display_mode_height(mode)
-        rate = display.get_display_mode_refresh_rate(mode)
+        width = display.get_display_mode_width(int_)
+        height = display.get_display_mode_height(int_)
+        rate = display.get_display_mode_refresh_rate(int_)
         return width, height, rate
 
     def set_display(self, width, height, rate=60):
@@ -61,10 +61,10 @@ class Window:
 
         self._aspect2D_edges = L, R, T, B
 
-    def set_max_fps(self, value):
-        value = max(value, 20)
+    def set_max_fps(self, int_):
+        int_ = max(int_, 20)
         globalClock.set_mode(ClockObject.MLimited)
-        globalClock.set_frame_rate(value)
+        globalClock.set_frame_rate(int_)
 
     @property
     def fullscreen(self):

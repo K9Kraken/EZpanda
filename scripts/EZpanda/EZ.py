@@ -273,9 +273,9 @@ class EZ(dict):
 
     # Attatch classes
     Node = Node
-    Line = Line
     Model = Model
     Actor = Actor
+    Line = Line
     SoftInstance = SoftInstance
     HardInstance = HardInstance
     Text = Text
